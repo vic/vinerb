@@ -1,6 +1,8 @@
 # Vinerb
 
-TODO: Write a gem description
+A full featured Vine.co API client for ruby.
+
+Part of the VineAPI suite. http://github.com/vineapi
 
 ## Installation
 
