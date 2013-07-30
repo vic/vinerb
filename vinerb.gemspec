@@ -8,9 +8,9 @@ Gem::Specification.new do |spec|
   spec.version       = Vinerb::VERSION
   spec.authors       = ["Victor Borja"]
   spec.email         = ["vborja@apache.org"]
-  spec.description   = %q{Vine API client for ruby}
-  spec.summary       = %q{Create your own apps that consume vine timelines}
-  spec.homepage      = "http://github.com/vineapi"
+  spec.description   = %q{Full featured Vine API client for ruby}
+  spec.summary       = %q{Full featured Vine API client for ruby}
+  spec.homepage      = "http://github.com/vic/vinerb"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -23,5 +23,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest"
 
   spec.add_dependency 'rest-client'
+  spec.add_dependency 'multi_json'
 
 end
