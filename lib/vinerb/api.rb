@@ -8,7 +8,8 @@ module Vinerb::API
   def api_call(request_type, url, params, clazz)
     json = MultiJson.decode rest_call(request_type, url, params)
     raise Vinerb::Error.new(json['error'], json['code']) unless json['error'].empty?
-    json
+    return json['data'] if clazz.nil?
+    Vinerb::Model.build clazz, json['data']
   end
 
   def rest_call(request_type, url, params)
