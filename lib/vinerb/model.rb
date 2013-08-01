@@ -1,50 +1,124 @@
-module Vinerb::Model
+module Vinerb
 
-  def self.build(clazz, attributes = {})
-    clazz = const_get(clazz)
-    instance = clazz.new
-    attributes.each { |n,v| instance["#{n}"] = v }
-  end
+  module Model
 
-  class User < Struct.new(:username, :email, :password)
+    attr_reader :json
 
-  end
+    ATTRIBUTE_TO_MODEL_NAME = {
+      'user'     => 'User',
+      'tags'     => 'Tag',
+      'entities' => 'Entity',
+      'comments' => 'CommentCollection',
+      'likes'    => 'LikeCollection',
+      'reposts'  => 'PostCollection'
+    }
 
-  class Post < Struct.new
-    # has_many :comments, :likes, :reports, :tags
-  end
+    def self.build_attributes(attributes = {})
+      attributes.inject({}) do |h, pair|
+        k, v = pair
+        if ATTRIBUTE_TO_MODEL_NAME.key?(k)
+          model = ATTRIBUTE_TO_MODEL_NAME[k]
+          if v.kind_of?(Array)
+            h[k] = v.map { |o| build(model, o) }
+          else
+            h[k] = build(model, v)
+          end
+        else
+          h[k] = v
+        end
+        h
+      end
+    end
 
-  class Like < Struct.new
+    def self.build(clazz, attributes = {})
+      clazz = const_get(clazz)
+      instance = clazz.new
 
-  end
+      instance.instance_variable_set(:@json, attributes)
+      instance.instance_variable_set(:@__attr__, build_attributes(attributes))
 
-  class Comment < Struct.new
+      clazz.module_eval do
+        attributes.each_key do |name|
+          define_method(name) { @__attr__[name] } unless method_defined?(name)
+        end
+      end
 
-  end
+      instance
+    end
 
-  class Repost < Struct.new
+    module Collection
 
-  end
+      include Enumerable
 
-  class Tag < Struct.new
+      def each(*a, &b)
+        records.each(*a, &b)
+      end
 
-  end
+    end
 
-  class Channel
-  end
 
-  class UserCollection
-    # followers / following
-  end
+    class User
 
-  class PostCollection
-    # timeline ( popular, user, editorpicks, trending)
-  end
+      include Model
 
-  class TagCollection
-  end
+    end
 
-  class ChannelCollection
+    class Post
+
+      include Model
+
+    end
+
+    class Like
+
+      include Model
+
+    end
+
+    class Comment
+
+      include Model
+
+    end
+
+    class Repost
+
+      include Model
+
+    end
+
+    class Tag
+
+      include Model
+
+    end
+
+    class Channel
+
+      include Model
+
+    end
+
+    class UserCollection
+      include Collection
+    end
+
+    class PostCollection
+      include Collection
+    end
+
+    class TagCollection
+      include Collection
+    end
+
+    class ChannelCollection
+      include Collection
+    end
+
+    class LikeCollection
+      include Collection
+    end
+
   end
 
 end
