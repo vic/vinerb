@@ -24,11 +24,11 @@
       end
 
 
-      def signup(username, password, email,  optionals = {} )
+      def signup(email, password, username,  optionals = {} )
         authenticate = optionals["authenticate"] || optionals[:authenticate]
         authenticate = 1 if authenticate.nil?
         url = (API_URL + "users") % []
-        params = {  "authenticate" => authenticate ,  "username" => username ,  "password" => password ,  "email" => email  }.reject { |k, v| v.nil? }
+        params = {  "authenticate" => authenticate ,  "email" => email ,  "password" => password ,  "username" => username  }.reject { |k, v| v.nil? }
         api_call "post", url, params, "User"
       end
 
@@ -51,7 +51,7 @@
       end
 
 
-      def update_user(user_id,  optionals = {} )
+      def update_profile(user_id,  optionals = {} )
         description = optionals["description"] || optionals[:description]; location = optionals["location"] || optionals[:location]; locale = optionals["locale"] || optionals[:locale]; private = optionals["private"] || optionals[:private]; phoneNumber = optionals["phoneNumber"] || optionals[:phoneNumber]
         
         url = (API_URL + "users/%s") % [user_id]
@@ -261,7 +261,7 @@
       def get_tag_timeline(tag_name,  optionals = {} )
         size = optionals["size"] || optionals[:size]; page = optionals["page"] || optionals[:page]; anchor = optionals["anchor"] || optionals[:anchor]
         
-        url = (API_URL + "timelines/users/%s") % [tag_name]
+        url = (API_URL + "timelines/tags/%s") % [tag_name]
         params = {  "size" => size ,  "page" => page ,  "anchor" => anchor  }.reject { |k, v| v.nil? }
         api_call "get", url, params, "PostCollection"
       end

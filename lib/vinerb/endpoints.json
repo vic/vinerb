@@ -27,7 +27,7 @@
       "endpoint": "users",
       "request_type": "post",
       "url_params": [],
-      "required_params": ["username", "password", "email"],
+      "required_params": ["email", "password", "username"],
       "optional_params": ["authenticate"],
       "default_params": {"authenticate": 1},
       "model": "User"
@@ -48,7 +48,7 @@
       "optional_params": [],
       "model": "User"
     },
-    "update_user": {
+    "update_profile": {
       "endpoint": "users/%s",
       "request_type": "post",
       "url_params": ["user_id"],
@@ -233,7 +233,7 @@
       "model": "PostCollection"
     },
     "get_tag_timeline": {
-      "endpoint": "timelines/users/%s",
+      "endpoint": "timelines/tags/%s",
       "request_type": "get",
       "url_params": ["tag_name"],
       "required_params": [],
